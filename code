@@ -1,0 +1,67 @@
+import random
+def hint_yes(a, b):
+    for i in b:
+        if b.count(i) == 1 and i not in a:
+            a[b.index(i)] = b[b.index(a)]
+            break
+    return "".join(a), a, b
+
+dictionary = {
+    "countries": ["afghanistan","albania","algeria","andorra","angola","argentina","armenia","australia","austria","azerbaijan","bahamas","bahrain","bangladesh","barbados","belarus"],
+    "flowers": [],
+    "fruits": [],
+    "vegetables": [],
+    "pokemons": [],
+    "animals": [],
+    "weapons": [],
+    "sports": ["volleyball","basketball", "tennis"],
+    "subjects": ["calculus"],
+}
+print('''
+All categories
+1. Sports
+2. Subjects
+''')
+category = input("Please pick a category: ")
+word = dictionary[category.lower()][random.randint(0, len(dictionary[category.lower()]))]
+hidden = list("*" * len(word))
+changing = list("*" * len(word))
+guesses = 0
+failed_guesses = 0
+print(f"HI, your word is {len(word)} characters long ")
+while True:
+    letter = input("")
+    index = 0
+    if len(letter) != 1:
+        print("please input only one letter")
+    else:
+        for i in word:
+            if letter[0] == i:
+                hidden[index] = letter[0]
+                index += 1
+            else:
+                index += 1
+        hidden = "".join(hidden)
+        changing = "".join(changing)
+        if hidden == changing:
+            print(f'no such letter, word is {hidden}')
+            guesses += 1
+            failed_guesses += 1
+        else:
+            if hidden == word:
+                print(f"You won, word was {word}. number of guesses {guesses}")
+                exit()
+            else:
+                print(f'yes, now word is {hidden}')
+                failed_guesses = 0
+                guesses += 1
+        changing = hidden
+        hidden = list(hidden)
+        changing = list(changing)
+        if failed_guesses == 5:
+            hint = input("U want hint? yes/no ")
+            if hint.lower() == 'yes':
+                print(hint_yes(changing, hidden))
+                failed_guesses = 6
+            if hint.lower() == "no":
+                failed_guesses = 6
