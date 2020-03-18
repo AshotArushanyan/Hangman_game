@@ -1,8 +1,9 @@
+# MILESTONE 1
+
 import random
 # I have already finished writing the code. It already has its main features. I may change and/or add something later
 # I have to fill the dictionary with new words and categories. I have not worked with jshon files yet but it is not the hard part.
 # You can play the game several times to check that everything(perhaps not everything) is working ok.
-
 
 
 # Story 1
@@ -102,7 +103,7 @@ while True:
             if hint.lower() == 'yes':
                 hidden = list(hidden)
                 changing = list(changing)
-                print(hint_yes(hidden, word))
+                print(f"I uncover one random letter for you, not the hidden word is {hint_yes(hidden, word)}")
                 changing = hidden
                 failed_guesses = 6
             if hint.lower() == "no":
