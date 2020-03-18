@@ -4,6 +4,7 @@ import random
 # You can play the game several times to check that everything(perhaps not everything) is working ok.
 
 
+
 # Story 1
 # This is a function that generates a new set which includes the same elements of any set, without any dublicates
 def unique_set(a):
