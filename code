@@ -1,67 +1,111 @@
 import random
+# I have already finished writing the code. It already has its main features. I may change and/or add something later
+# I have to fill the dictionary with new words and categories. I have not worked with jshon files yet but it is not the hard part.
+# You can play the game several times to check that everything(perhaps not everything) is working ok.
+
+
+# Story 1
+# This is a function that generates a new set which includes the same elements of any set, without any dublicates
+def unique_set(a):
+    new_word = []
+    for i in a:
+        if i not in new_word:
+            new_word.append(i)
+    return len(new_word)
+
+
+# Story 2
+# This is a function that uncovers wanted letter, if it is present in the hidden word
+def letter_guessing():
+    index = 0
+    for i in word:
+        if letter[0] == i:
+            hidden[index] = letter[0]
+            index += 1
+        else:
+            index += 1
+
+
+# Story 3
+# This is a function that uncovers one random letter in the hidden word, if that letter is unique in word and have not been guessed already
 def hint_yes(a, b):
     for i in b:
         if b.count(i) == 1 and i not in a:
-            a[b.index(i)] = b[b.index(a)]
+            a[b.index(random.choice(i))] = b[b.index(random.choice(i))]
             break
-    return "".join(a), a, b
+    return "".join(a)
+
 
 dictionary = {
     "countries": ["afghanistan","albania","algeria","andorra","angola","argentina","armenia","australia","austria","azerbaijan","bahamas","bahrain","bangladesh","barbados","belarus"],
     "flowers": [],
     "fruits": [],
     "vegetables": [],
-    "pokemons": [],
     "animals": [],
     "weapons": [],
-    "sports": ["volleyball","basketball", "tennis"],
-    "subjects": ["calculus"],
+    "sports": [],
 }
-print('''
-All categories
-1. Sports
-2. Subjects
+
+print(''' Hello, lets play a game. To start, you need to pick a category
+
+Categories:
+1. Countries
+2. Flowers
+3. Fruits
+4. Vegetables
+5. Animals
+6. Weapons
+7. Sports
 ''')
 category = input("Please pick a category: ")
-word = dictionary[category.lower()][random.randint(0, len(dictionary[category.lower()]))]
+while True:
+    if category not in dictionary:
+        category = input("There is no such category. Please pick again: ")
+    else:
+        break
+word = dictionary[category.lower()][random.randint(0, -1+len(dictionary[category.lower()]))]
 hidden = list("*" * len(word))
 changing = list("*" * len(word))
-guesses = 0
+guesses = 1
 failed_guesses = 0
-print(f"HI, your word is {len(word)} characters long ")
+print(f"Now i think of a word under the category {category}. It is {len(word)} characters long. ")
 while True:
-    letter = input("")
-    index = 0
+    letter = input("Please input a letter: ")
     if len(letter) != 1:
-        print("please input only one letter")
+        print("Please input only one letter")
+    elif letter[0] in hidden:
+        print(f"You have already guessed that letter.")
     else:
-        for i in word:
-            if letter[0] == i:
-                hidden[index] = letter[0]
-                index += 1
-            else:
-                index += 1
+        letter_guessing()
         hidden = "".join(hidden)
         changing = "".join(changing)
         if hidden == changing:
-            print(f'no such letter, word is {hidden}')
+            print(f'I am very sorry but there is no such letter, the hidden word is still {hidden}')
             guesses += 1
             failed_guesses += 1
         else:
             if hidden == word:
-                print(f"You won, word was {word}. number of guesses {guesses}")
-                exit()
+                unique_set(word)
+                if guesses == unique_set(word):
+                    print(f"Wow, you are so smart. You have not guessed incorrectly even once. The word was {word}, number of guesses {guesses}")
+                    exit()
+                else:
+                    print(f"Nice, you won, word was {word}, number of guesses {guesses}")
+                    exit()
             else:
-                print(f'yes, now word is {hidden}')
+                print(f'Cool, you are right, the word is now {hidden}')
                 failed_guesses = 0
                 guesses += 1
-        changing = hidden
-        hidden = list(hidden)
-        changing = list(changing)
         if failed_guesses == 5:
-            hint = input("U want hint? yes/no ")
+            hint = input(f"It seems like you have some difficulties with guessing that word. Would you like to take a hint? yes/no ")
             if hint.lower() == 'yes':
-                print(hint_yes(changing, hidden))
+                hidden = list(hidden)
+                changing = list(changing)
+                print(hint_yes(hidden, word))
+                changing = hidden
                 failed_guesses = 6
             if hint.lower() == "no":
                 failed_guesses = 6
+        changing = hidden
+        hidden = list(hidden)
+        changing = list(changing)
