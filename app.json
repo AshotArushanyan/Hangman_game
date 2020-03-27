@@ -1,0 +1,11 @@
+{"categories": {
+"countries": ["afghanistan","albania","algeria","andorra","angola","argentina","armenia","australia","austria","azerbaijan","bahamas","bahrain","bangladesh","barbados","belarus"],
+"flowers": [],
+"fruits": [],
+"vegetables": [],
+"animals": [],
+"weapons": [],
+"sports": []
+},
+"players": {"Ashot": {"points": 104, "favorite_category": "countries", "words_guessed": ["andorra", "andorra", "albania"], "categories_picked": ["countries", "countries", "countries"]}}
+}
