@@ -104,8 +104,10 @@ def information_getting(game, username):
         for key, value in game["players"][username].items():
             if type(value) != list and type(value) != dict:
                 print(key, ": ", value)
+        print("Thanks for playing. See you next time")
         exit()
     else:
+        print("Thanks for playing. See you next time")
         exit()
 
 
