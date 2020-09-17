@@ -165,31 +165,19 @@
   },
   "players": {
     "Ashot": {
-      "points": 155,
-      "favorite_category": "sports",
-      "words_guessed": [
-        "cucumber",
-        "football",
-        "bird",
-        "fishing",
-        "uranus"
-      ],
+      "points": 81,
+      "favorite_category": "animals",
+      "words_guessed": [],
       "categories_picked": [
-        "vegetables",
-        "sports",
-        "animals",
-        "sports",
-        "planets"
+        "animals"
       ]
     },
-    "Tigran": {
-      "points": 45,
-      "favorite_category": "planets",
-      "words_guessed": [
-        "venus"
-      ],
+    "serGEY": {
+      "points": 44,
+      "favorite_category": "fruits",
+      "words_guessed": [],
       "categories_picked": [
-        "planets"
+        "fruits"
       ]
     }
   }
