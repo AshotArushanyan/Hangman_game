@@ -19,8 +19,8 @@ books = [
 
 
 def bubble_sorting(list):
-    for i in range(len(list)):
-        for j in range(len(list)-1):
+    for i in range(len(list)-1):
+        for j in range(len(list)-1-i):
             if list[j]["published"] > list[j+1]["published"]:
                 temporary = list[j]
                 list[j] = list[j+1]
