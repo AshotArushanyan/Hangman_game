@@ -2,6 +2,68 @@ import random
 import json
 
 
+class Node:
+
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next_node = next_node
+
+    def __repr__(self):
+        return f"{self.data}"
+
+
+class LinkedList:
+
+    def __init__(self, root=None):
+        self.root: Node = root
+        # self.size = 0
+
+    # def add_beginning(self, data):
+    #     new_node = Node(data, self.root)
+    #     self.root = new_node
+    #     self.size += 1
+
+    def add_end(self, data):
+        new_node = Node(data)
+        if self.root is None:
+            self.root = new_node
+            return
+        n = self.root
+        while n.next_node is not None:
+            n = n.next_node
+        n.next_node = new_node
+
+    def find(self, data):
+        current_node = self.root
+        while current_node is not None:
+            if current_node.data == data:
+                return data
+            else:
+                current_node = current_node.next_node
+
+    # def remove(self, data):
+    #     current_node = self.root
+    #     previous_node = None
+    #     while current_node is not None:
+    #         if current_node.data == data:
+    #             if previous_node is not None:
+    #                 previous_node.next_node = current_node.next_node
+    #             else:
+    #                 self.root = current_node.next_node
+    #             self.size -= 1
+    #             return True
+    #         else:
+    #             previous_node = current_node
+    #             current_node = current_node.next_node
+    #     return False
+
+    def print_list(self):
+        current_node = self.root
+        while current_node is not None:
+            print(f"{current_node}")
+            current_node = current_node.next_node
+
+
 class Json:
 
     with open('Hangman.json') as json_file:
@@ -14,6 +76,7 @@ class Json:
         self.category = category
         self.word = word
         self.points = points
+        self.rank = ""
 
     def json_dump(self):
         with open('Hangman.json', 'w') as outfile:
@@ -21,48 +84,65 @@ class Json:
 
     def username_picking(self):
         self.username = input("please enter your username: ")
+        print()
         if self.username not in self.list_of_players:
-            self.list_of_players[self.username] = {"points": 50, "favorite_category": "", "words_guessed": [], "categories_picked": []}
+            self.list_of_players[self.username] = {"points": 50, "favorite_category": "",  "categories_picked": []}
         self.points = self.list_of_players[self.username]["points"]
 
     def category_picking(self):
-        print(f'''Hello {self.username}, lets play a game. To start, you need to pick a category.''')
-        number = 1
-        for i in self.list_of_categories.keys():
-            print(f"{number}. {i}")
-            number += 1
+        print(f'''Hello {self.username}, lets play a game. To start, you need to pick a category.''', end="\n\n")
+        ll = LinkedList()
+        for i in self.game['categories'].keys():
+            ll.add_end(i)
+        ll.print_list()
+        print()
         self.category = input("Please pick a category: ")
+        print()
         while True:
-            if self.category not in self.list_of_categories:
+            if ll.find(self.category) is None:
                 self.category = input("There is no such category. Please pick again: ")
+                print()
             else:
-                self.word = self.list_of_categories[self.category][random.randint(0,-1+len(self.list_of_categories[self.category]))]
-                self.list_of_players[self.username]["categories_picked"].append(self.category)
+                self.word = self.list_of_categories[self.category.lower()][random.randint(0, -1+len(self.list_of_categories[self.category.lower()]))]
+                self.list_of_players[self.username]["categories_picked"].append(self.category.lower())
                 self.list_of_players[self.username]["favorite_category"] = max(set(self.list_of_players[self.username]["categories_picked"]), key=self.list_of_players[self.username]["categories_picked"].count)
                 break
 
     def defining_rules(self):
-        print(f"""
-    For each guessed letter you will earn 5 points.
-    For each failed guess you will lose 3 points.
-    For a taken hint you will lose 10 points.
-    IF you guess the word with no failed guesses, you additionaly get 20 points.
-    Good luck, now you have {self.points} points!
-    """)
-        print(f"Now i think of a word under the category {self.category}. It is {len(self.word)} characters long. ")
+        print(f"""For each guessed letter you will earn 5 points.
+For each failed guess you will lose 3 points.
+For a taken hint you will lose 10 points.
+IF you guess the word with no failed guesses, you additionaly get 20 points.
+Good luck, now you have {self.points} points!""", end="\n\n")
+        print(f"Now i think of a word under the category {self.category}. It is {len(self.word)} characters long. ", end="\n\n")
 
     def information_getting(self):
         info = input("If you want to know your statistics, insert info, otherwise GAME OVER: ")
+        print()
         if info.lower() == "info":
-            print(f"username: {self.username}")
-            for key, value in self.list_of_players[self.username].items():
-                if type(value) != list and type(value) != dict:
-                    print(key, ": ", value)
-            print("Thanks for playing. See you next time")
-            exit()
-        else:
-            print("Thanks for playing. See you next time")
-            exit()
+            print()
+            print(f"{self.ranking()} {self.username}")
+            ll = LinkedList()
+            for key, value in self.game["players"][self.username].items():
+                if type(value) != list:
+                    ll.add_end(f"{key}: {value}")
+            ll.print_list()
+            print()
+        print("Thanks for playing. See you next time!")
+        exit()
+
+    def ranking(self):
+        if self.points < 100:
+            self.rank = "Beginner"
+        elif self.points in range(100,200):
+            self.rank = "Specialist"
+        elif self.points in range(200,300):
+            self.rank = "Master"
+        elif self.points in range(300,400):
+            self.rank = "King"
+        elif self.points >= 400:
+            self.rank = "Genius"
+        return self.rank
 
 
 class Process(Json):
@@ -108,45 +188,48 @@ class Process(Json):
     def process(self, start):
         while True:
             self.letter = input("Please input a letter: ")
+            print()
             if len(self.letter) != 1:
-                print("Please input only one letter")
+                print("Please input only one letter", end="\n\n")
             else:
                 if self.letter[0] in self.hidden:
-                    print(f"You have already guessed that letter.")
+                    print(f"You have already guessed that letter.", end="\n\n")
                 else:
                     self.letter_guessing()
                     self.hidden = "".join(self.hidden)
                     self.changing = "".join(self.changing)
                     if self.hidden == self.changing:
                         self.points -= 3
-                        print(f'There is no such letter, the hidden word is still {self.hidden}. You have {self.points} points')
+                        print(f'There is no such letter, the hidden word is still {self.hidden}. You have {self.points} points', end="\n\n")
                         self.guesses += 1
                         self.failed_guesses += 1
                     else:
                         if self.hidden == self.word:
                             if self.guesses == self.deleting_list_duplicates():
                                 self.points += 20 + 5 * 5 * self.quantity_of_letters()
-                                print(f"Wow, you are so smart. You have not guessed incorrectly even once. That is why you get additional 20 points. The word was {self.word} and it took you {self.guesses} guesses. You have {self.points} points")
+                                print(f'''Wow, you are so smart. You have not guessed incorrectly even once. 
+That is why you get additional 20 points. The word was {self.word} and it took you {self.guesses} guesses. You have {self.points} points''', end="\n\n")
                             else:
                                 self.points += 5 * self.quantity_of_letters()
-                                print(f"Nice, you won!The word was {self.word} and it took you {self.guesses} guesses. You have {self.points} points")
+                                print(f"Nice, you won!The word was {self.word} and it took you {self.guesses} guesses. You have {self.points} points", end="\n\n")
                             self.list_of_players[self.username]["points"] = self.points
                             start.json_dump()
+                            start.ranking()
                             start.information_getting()
                         else:
                             self.points += 5 * self.quantity_of_letters()
-                            print(
-                                f'Cool, you are right, the word is now {self.hidden}. You have {self.points} points')
+                            print(f'Cool, you are right, the word is now {self.hidden}. You have {self.points} points', end="\n\n")
                             self.failed_guesses = 0
                             self.guesses += 1
                     if self.failed_guesses == 5:
                         hint = input(f"""It seems like you have some difficulties with guessing that word. Would you like to take a hint?
 type yes if you do, otherwise you will not get it: """)
+                        print()
                         if hint.lower() == 'yes':
                             self.hidden = list(self.hidden)
                             self.changing = list(self.changing)
                             self.points -= 25
-                            print(f"I uncover one random letter for you, now the hidden word is {self.hint_uncover_letter()}.You have {self.points} points")
+                            print(f"I uncover one random letter for you, now the hidden word is {self.hint_uncover_letter()}.You have {self.points} points", end="\n\n")
                             self.changing = self.hidden
                         self.failed_guesses = 6
                     self.changing = self.hidden
@@ -159,9 +242,9 @@ def main():
     start.username_picking()
     start.category_picking()
     start.defining_rules()
-    process = Process(list("*" * len(start.word)), list("*" * len(start.word)), 1, 0, Json.game["categories"],
-                      Json.game["players"], start.username, start.category, start.word, start.points)
+    process = Process(list("*" * len(start.word)), list("*" * len(start.word)), 1, 0, Json.game["categories"], Json.game["players"], start.username, start.category, start.word, start.points)
     process.process(start)
+
 
 main()
 

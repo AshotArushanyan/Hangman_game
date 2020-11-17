@@ -165,19 +165,12 @@
   },
   "players": {
     "Ashot": {
-      "points": 81,
-      "favorite_category": "animals",
-      "words_guessed": [],
+      "points": 532,
+      "favorite_category": "planets",
       "categories_picked": [
-        "animals"
-      ]
-    },
-    "serGEY": {
-      "points": 44,
-      "favorite_category": "fruits",
-      "words_guessed": [],
-      "categories_picked": [
-        "fruits"
+        "animals",
+        "planets",
+        "planets"
       ]
     }
   }
