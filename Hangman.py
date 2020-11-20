@@ -60,7 +60,7 @@ Good luck, now you have {self.points} points!""", end="\n\n")
         print()
         if info.lower() == "info":
             print()
-            print(f"{self.ranking()} {self.username}")
+            print(f"* {self.ranking()} * {self.username}")
             ll = SingleLinkedList()
             for key, value in self.game["players"][self.username].items():
                 if type(value) != list:
