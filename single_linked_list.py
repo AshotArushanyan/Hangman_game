@@ -4,7 +4,7 @@ class Node:
         self.next = next
 
     def __repr__(self):
-        return f"( {self.data} )"
+        return f"* {self.data} *"
 
 
 class SingleLinkedList:
@@ -108,6 +108,14 @@ class SingleLinkedList:
                     current_node = current_node.next
             print("There is no such data in the list")
 
+    def find(self, data):
+        current_node = self.first
+        while current_node is not None:
+            if current_node.data == data:
+                return data
+            else:
+                current_node = current_node.next
+
     def remove(self, data):
         current_node = self.first
         previous_node = None
@@ -134,11 +142,9 @@ class SingleLinkedList:
                 index += 1
 
     def print_list(self):
-        if self.first is None:
-            return
         current_node = self.first
         while current_node is not None:
-            print(current_node, end=" -> ")
+            print(f"{current_node}")
             current_node = current_node.next
 
 
@@ -227,7 +233,7 @@ def test_list_functions(list):
 
 
 sll = SingleLinkedList()
-test_list_functions(sll)
+# test_list_functions(sll)
 
 
 
