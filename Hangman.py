@@ -1,67 +1,6 @@
 import random
 import json
-
-
-class Node:
-
-    def __init__(self, data, next_node=None):
-        self.data = data
-        self.next_node = next_node
-
-    def __repr__(self):
-        return f"{self.data}"
-
-
-class LinkedList:
-
-    def __init__(self, root=None):
-        self.root: Node = root
-        # self.size = 0
-
-    # def add_beginning(self, data):
-    #     new_node = Node(data, self.root)
-    #     self.root = new_node
-    #     self.size += 1
-
-    def add_end(self, data):
-        new_node = Node(data)
-        if self.root is None:
-            self.root = new_node
-            return
-        n = self.root
-        while n.next_node is not None:
-            n = n.next_node
-        n.next_node = new_node
-
-    def find(self, data):
-        current_node = self.root
-        while current_node is not None:
-            if current_node.data == data:
-                return data
-            else:
-                current_node = current_node.next_node
-
-    # def remove(self, data):
-    #     current_node = self.root
-    #     previous_node = None
-    #     while current_node is not None:
-    #         if current_node.data == data:
-    #             if previous_node is not None:
-    #                 previous_node.next_node = current_node.next_node
-    #             else:
-    #                 self.root = current_node.next_node
-    #             self.size -= 1
-    #             return True
-    #         else:
-    #             previous_node = current_node
-    #             current_node = current_node.next_node
-    #     return False
-
-    def print_list(self):
-        current_node = self.root
-        while current_node is not None:
-            print(f"{current_node}")
-            current_node = current_node.next_node
+from single_linked_list import Node, SingleLinkedList
 
 
 class Json:
@@ -91,9 +30,9 @@ class Json:
 
     def category_picking(self):
         print(f'''Hello {self.username}, lets play a game. To start, you need to pick a category.''', end="\n\n")
-        ll = LinkedList()
+        ll = SingleLinkedList()
         for i in self.game['categories'].keys():
-            ll.add_end(i)
+            ll.insert_last(i)
         ll.print_list()
         print()
         self.category = input("Please pick a category: ")
@@ -122,10 +61,10 @@ Good luck, now you have {self.points} points!""", end="\n\n")
         if info.lower() == "info":
             print()
             print(f"{self.ranking()} {self.username}")
-            ll = LinkedList()
+            ll = SingleLinkedList()
             for key, value in self.game["players"][self.username].items():
                 if type(value) != list:
-                    ll.add_end(f"{key}: {value}")
+                    ll.insert_last(f"{key}: {value}")
             ll.print_list()
             print()
         print("Thanks for playing. See you next time!")
@@ -133,15 +72,15 @@ Good luck, now you have {self.points} points!""", end="\n\n")
 
     def ranking(self):
         if self.points < 100:
-            self.rank = "Beginner"
+            self.rank = "BEGINNER"
         elif self.points in range(100,200):
-            self.rank = "Specialist"
+            self.rank = "SPECIALIST"
         elif self.points in range(200,300):
-            self.rank = "Master"
+            self.rank = "MASTER"
         elif self.points in range(300,400):
-            self.rank = "King"
+            self.rank = "KING"
         elif self.points >= 400:
-            self.rank = "Genius"
+            self.rank = "GENIUS"
         return self.rank
 
 
@@ -228,7 +167,7 @@ type yes if you do, otherwise you will not get it: """)
                         if hint.lower() == 'yes':
                             self.hidden = list(self.hidden)
                             self.changing = list(self.changing)
-                            self.points -= 25
+                            self.points -= 10
                             print(f"I uncover one random letter for you, now the hidden word is {self.hint_uncover_letter()}.You have {self.points} points", end="\n\n")
                             self.changing = self.hidden
                         self.failed_guesses = 6
