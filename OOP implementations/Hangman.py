@@ -1,4 +1,5 @@
 import random
+
 import json
 from single_linked_list import Node, SingleLinkedList
 
