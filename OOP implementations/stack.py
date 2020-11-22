@@ -26,6 +26,7 @@ class Stack:
         return self.items
 
 
+    
 def test_stack_functions(stack):
 
     print("\nTesting the functions of Stack:")
