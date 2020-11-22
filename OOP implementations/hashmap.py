@@ -3,7 +3,6 @@ class Entry:
         self.key = key
         self.value = value
 
-
 class HashMap:
 
     def __init__(self):
