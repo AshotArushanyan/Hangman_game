@@ -3,6 +3,7 @@ class Entry:
         self.key = key
         self.value = value
 
+
 class HashMap:
 
     def __init__(self):
@@ -76,3 +77,57 @@ class HashMap:
         return self._hashtable[tmpInd].value
 
 
+def test_hashset_functions(hashmap):
+
+    print("\nTesting the functions of Hashmap:")
+
+    # test put
+
+    hashmap.put(1, 12)
+    hashmap.put(2, 22)
+    hashmap.put(3, 5)
+    hashmap.put(4, 10)
+    hashmap.put(5, 3)
+
+    list_to_test = []
+
+    for i in hashmap:
+        list_to_test.append(i)
+
+    if list_to_test == [12, 22, 5, 10, 3]:
+        print("\nTest put: PASS")
+    else:
+        print("\nTest put: FAIL")
+
+    # test get
+
+    if hashmap.get(2) == 22:
+        print("\nTest get: PASS")
+    else:
+        print("\nTest get: FAIL")
+
+    # test remove
+
+    hashmap.remove(3)
+    hashmap.remove(2)
+
+    list_to_test = []
+
+    for i in hashmap:
+        list_to_test.append(i)
+
+    if list_to_test == [12, 10, 3]:
+        print("\nTest remove: PASS")
+    else:
+        print("\nTest remove: FAIL")
+
+    # test haskey
+
+    if hashmap.hasKey(12) == 1:
+        print("\nTest haskey: PASS")
+    else:
+        print("\nTest haskey: FAIL")
+
+
+hashmap = HashMap()
+test_hashset_functions(hashmap)

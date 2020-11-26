@@ -75,15 +75,6 @@ class HashSet:
     def size(self):
         return self._size
 
-    def intersection(self, s):
-        newSet = HashSet(100)
-        for element in self._hashtable:
-            while element is not None:
-                if s.contains(element.data):
-                    newSet.add(element.data)
-                element = element.next
-        return newSet
-
     def __iter__(self):
         for element in self._hashtable:
             if element is not None:
@@ -110,14 +101,52 @@ class HashSet:
         return str(self._hashtable)
 
 
-HS = HashSet(5)
-HS.add(11)
-HS.add(23)
-HS.add(54)
-HS.add(89)
-HS.add(102)
-HS.add(25)
-HS.add(3)
-HS.add(44)
+def test_hashset_functions(hashset):
 
-print(HS)
+    print("\nTesting the functions of Hashset:")
+
+    # test add
+
+    hashset.add(12)
+    hashset.add(22)
+    hashset.add(5)
+    hashset.add(10)
+    hashset.add(3)
+
+    list_to_test = []
+
+    for i in hashset:
+        list_to_test.append(i)
+
+    if list_to_test == [10 ,5, 22, 12, 3]:
+        print("\nTest add: PASS")
+    else:
+        print("\nTest add: FAIL")
+
+    # test contains
+
+    if hashset.contains(10) and hashset.contains(22):
+        print("\nTest contains: PASS")
+    else:
+        print("\nTest contains: FAIL")
+
+    # test remove
+
+    hashset.remove(10)
+    hashset.remove(22)
+
+    list_to_test = []
+
+    for i in hashset:
+        list_to_test.append(i)
+
+    if list_to_test == [5, 12, 3]:
+        print("\nTest remove: PASS")
+    else:
+        print("\nTest remove: FAIL")
+
+
+hashset = HashSet(5)
+test_hashset_functions(hashset)
+
+
