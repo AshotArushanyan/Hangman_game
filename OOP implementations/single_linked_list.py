@@ -1,5 +1,6 @@
+import random
+
 class Node:
-    
     def __init__(self, data, next):
         self.data = data
         self.next = next
@@ -147,6 +148,16 @@ class SingleLinkedList:
         while current_node is not None:
             print(f"{current_node}")
             current_node = current_node.next
+
+    def pick_random(self):
+        list_to_choose = []
+        current = self.get_first()
+        while current is not None:
+            list_to_choose.append(current.data)
+            current = current.next
+        return random.choice(list_to_choose)
+
+
 
 
 def test_list_functions(list):

@@ -1,3 +1,6 @@
+import random
+
+
 class Stack:
 
     def __init__(self):
@@ -25,8 +28,18 @@ class Stack:
     def __repr__(self):
         return self.items
 
+    def print_stack(self):
+        if self.is_empty():
+            return
+        element = self.top()
+        self.pop()
+        self.print_stack()
+        print(f"{element}")
 
-    
+    def pick_random(self):
+        return random.choice(self.items)
+
+
 def test_stack_functions(stack):
 
     print("\nTesting the functions of Stack:")
@@ -71,4 +84,4 @@ def test_stack_functions(stack):
 
 
 stack = Stack()
-test_stack_functions(stack)
+# test_stack_functions(stack)
