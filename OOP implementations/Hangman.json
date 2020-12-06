@@ -165,10 +165,16 @@
   },
   "players": {
     "Ashot": {
-      "points": 532,
+      "points": 774,
       "favorite_category": "planets",
       "categories_picked": [
         "animals",
+        "planets",
+        "planets",
+        "planets",
+        "planets",
+        "planets",
+        "planets",
         "planets",
         "planets"
       ]
